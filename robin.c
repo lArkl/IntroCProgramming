@@ -11,16 +11,24 @@ typedef struct process{
 
 typedef struct node{
 	int id;
+	int arrival;
+	int completion;
 	struct node *next;
-	int aT;
-	int cT; 
-}
+}node;
 
 typedef struct processQueue{
 	int time;
-	process *last;
-	process *first;
+	node *last;
+	node *first;
 }processQueue;
+
+void setProcess(process *p,int at, int bt){
+	static int x=1;
+	p->id=x;
+	p->aT=at;
+	p->bT=bt;
+	x++;
+}
 
 void initQueue(processQueue *q){
 	q->last=NULL;
@@ -28,14 +36,14 @@ void initQueue(processQueue *q){
 	q->time=0;
 }
 
-void enqueue(processQueue *q, process *p){
+void enqueue(processQueue *q, node *n){
 	if(q->last==NULL){
-		q->first=p;
-		q->last=p;
+		q->first=n;
+		q->last=n;
 	}else{
-		q->last->next=p;
-		q->last=p;
-		p->next=NULL;
+		q->last->next=n;
+		q->last=n;
+		n->next=NULL;
 	}
 }
 
@@ -59,16 +67,7 @@ void printGantt(processQueue q){
 	}printf("\n");
 }
 
-void setProcess(process *p,int at, int ct){
-	static int x=1;
-	p->id=x;
-	p->arrivalT=at;
-	p->completionT=ct;
-	p->progress=0;
-	x++;
-}
-
-void roundRobin(processQueue *q,process *p){
+void roundRobin(processQueue *q,int n,process p[n]){
 	int quantum;
 	printf("Ingrese quantum: ");scanf("%d",&quantum);
 	process *pr;
@@ -84,10 +83,7 @@ void roundRobin(processQueue *q,process *p){
 		pr->progress+=quantum;
 		q->time+=quantum;
 		//arrival time
-		
 	}
-	
-	
 }
 
 void main(){
