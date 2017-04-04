@@ -3,11 +3,18 @@
 
 typedef struct process{
 	int id;
-	int arrivalT;
-	int completionT;
-	int progress;
-	struct process *next;
+	int aT;
+	int bT;
+	int tT;
+	int wT;
 }process;
+
+typedef struct node{
+	int id;
+	struct node *next;
+	int aT;
+	int cT; 
+}
 
 typedef struct processQueue{
 	int time;
