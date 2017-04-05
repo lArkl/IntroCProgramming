@@ -18,8 +18,7 @@ typedef struct node{
 }node;
 
 typedef struct processQueue{
-	int time;
-	node *actual;
+	int elements;
 	node *last;
 	node *first;
 }processQueue;
@@ -37,8 +36,7 @@ void setProcess(process *p,int at, int bt){
 void initQueue(processQueue *q){
 	q->last=NULL;
 	q->first=NULL;
-	q->actual=NULL;
-	q->time=0;
+	q->elements=0;
 }
 
 void enqueue(processQueue *q, node *n){
@@ -48,8 +46,18 @@ void enqueue(processQueue *q, node *n){
 	}else{
 		q->last->next=n;
 		q->last=n;
-		n->next=NULL;
 	}
+	q->elements++;
+}
+
+node *dequeue(processQueue *q){
+	node *n;
+	if(q->first!=NULL){
+		n=q->first;
+		q->first=q->first->next;
+		q->elements--;
+	}	
+	return n;
 }
 
 void printProcess(int n, process *p){
@@ -71,24 +79,76 @@ void printGantt(processQueue q){
 		printf("  %d",p->completionT);
 	}printf("\n");
 }*/
+void insertionSort(int n, process *p){
+	int i,j;
+	for(i=0;i<n;i++){
+		j=i;
+		while(j>0 && p[j-1].aT > p[j].aT){
+			process aux;
+			aux=p[j-1];
+			p[j-1]=p[j];
+			p[j]=aux;
+			j--;
+		 }
+	}
+}
 
 void roundRobin(processQueue *q,int n,process *p){
-	int quantum,i;
+	int quantum,i,time=0;
 	printf("Ingrese quantum: ");scanf("%d",&quantum);
-	node *nodes[n];
 	//sort first and then comes the creation of nodes
+	insertionSort(n,p);
+	node *nodes[n];
 	for(i=0;i<n;i++){
-	  nodes[i]=(node *)malloc(sizeof(node));
-	  nodes[i]->arrival=p[i].aT;
-	  nodes[i]->completion=p[i].bT;
-	  nodes[i]->id=p[i].id;
+		nodes[i]=(node *)malloc(sizeof(node));
+		nodes[i]->arrival=p[i].aT;
+		nodes[i]->completion=p[i].bT;
+		nodes[i]->id=p[i].id;
+		nodes[i]->next=NULL;
 	}
-	q->time+=nodes[0]->arrival;
+	
+	int diff=nodes[0]->arrival;
 	enqueue(q,nodes[0]);
-	node *actual=q->first
-	//while(actual!=NULL){
-	  if()
-	//}
+	node *actual;
+	while(q->elements!=0){
+		//arrival times
+		actual=dequeue(q);
+		printf("actual: %d\n",actual->id);
+		actual->p->wT+=time;		
+		//p[actual->id-1]-=time;
+		for(i=0;i<n;i++){
+			if(nodes[i]->arrival==-1)continue;
+			if(nodes[i]->arrival>0)nodes[i]->arrival-=diff;
+			if(nodes[i]->arrival<=0){
+				nodes[i]->arrival=-1;//marca de proceso alcanzado
+				if(actual!=nodes[i])enqueue(q,nodes[i]);
+				printf("%d\t",i);
+			}
+		}
+		//completion time
+		if(actual->completion<=quantum)
+			diff=actual->completion;
+		else {
+			diff=quantum;
+		}
+		for(i=0;i<n;i++){
+			if(nodes[i]->arrival==-1)continue;
+			if(nodes[i]->arrival>0)nodes[i]->arrival-=diff;
+			if(nodes[i]->arrival<=0){
+				nodes[i]->arrival=-1;//marca de proceso alcanzado
+				if(actual!=nodes[i])enqueue(q,nodes[i]);
+				printf("%d\t",i);
+			}
+		}
+		actual->completion-=diff;
+		time+=diff;
+		if(actual->completion<=0){
+			actual->p->tT=time;
+		}else{
+			actual->p->wT-=time;
+			enqueue(q,actual);
+		}
+	}
 }
 
 void main(){
@@ -103,13 +163,11 @@ void main(){
 	char ans='s';
 	for(k=0;k<n;k++){
 		int at,bt;
-		printf("Proceso %d\n",k+1);
+		printf("\nProceso %d\n",k+1);
 		printf("Ingresar arrival time: "); scanf("%d",&at);
 		printf("Ingresar burst time: "); scanf("%d",&bt);
-		//p=(process *)malloc(sizeof(process));
 		setProcess(&p[k],at,bt);
-		//system("clear");
 	}
-	//enqueue(&q,p);
 	printProcess(n,p);
+	roundRobin(&q,n,p);
 }
