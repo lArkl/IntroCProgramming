@@ -1,7 +1,5 @@
 #include<stdio.h>
 
-#define PI 3.1416
-
 void main(void){
 	int num,a,b,c;
 	printf("Ingrese un numero de 3 cifras: ");

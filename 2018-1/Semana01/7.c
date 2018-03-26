@@ -1,8 +1,6 @@
 #include<stdio.h>
 #include<math.h>
 
-#define PI 3.1416
-
 void main(void){
 	int a,b,c;
 	float discriminante;
