@@ -1,2 +1,3 @@
-# cc102
-Ejercicios del curso Introduccion a la programacion desarrollados en C.
+# Introduction to Programming
+
+Exercies from the course Introduction to Programming, developed in C language.
