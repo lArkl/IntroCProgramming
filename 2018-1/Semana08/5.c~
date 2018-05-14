@@ -6,7 +6,7 @@ void insertionSort(int *arr, int n);
 void carga(int *arr, int n);
 
 void main(void){
-	int n=15;
+	int n=10;
 	int *arr;
 	printf("Indice\tArreglo\n");
 	carga(arr, n);
