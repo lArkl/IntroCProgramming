@@ -7,9 +7,10 @@ void carga(int *arr, int n);
 
 void main(void){
 	int n=15;
-	int *arr;
+	int arr[n];
+	int *pArr = arr;
 	printf("Indice\tArreglo\n");
-	carga(arr, n);
+	carga(pArr, n);
 }
 
 void imprimir(int n,int *arr){
@@ -20,27 +21,19 @@ void imprimir(int n,int *arr){
 	printf("\n");
 }
 
-void insertionSort(int *arr, int n){
-	int i;
-	for(i=1;i<n;i++){
-		int j;
-		for(j=i;j>0;j--){
-			if(arr[j-1]>arr[j]){
-				int aux = arr[j];
-				arr[j] = arr[j-1];
-				arr[j-1] = aux;
-			}
-		}
-	}
-}
-
 void carga(int *arr, int n){
-	int i;
-	arr = malloc(sizeof(int)*n);
+	int i,j;
+	//arr = malloc(sizeof(int)*n);
 	for(i = 0;i<n;i++){
 		int r = rand()%51+10;
-		arr[i] = r;
-		insertionSort(arr,i);
+		*(arr + i) = r;
+		if(i==0)continue;
+		for(j=i; j>0 ;j--){
+			if(*(arr+j-1)>r ){
+				*(arr+j) = *(arr+j-1);
+				*(arr+j-1) = r;
+			}
+		}
 		imprimir(i,arr);
 	}
 }

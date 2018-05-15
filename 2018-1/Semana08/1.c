@@ -26,7 +26,7 @@ void imprimir2(int m,int n,int *parr){
 		printf("\n");
 	}
 }
-
+//Ingresa los valores aleatorios al arreglo bidimensional
 void llenar(int m, int n,int arr[][n]){
 	int i,j;
 	for(j=0;j<m;j++)
