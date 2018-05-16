@@ -2,7 +2,6 @@
 #include<stdlib.h>
 
 void imprimir(int n,int *arr);
-void insertionSort(int *arr, int n);
 void carga(int *arr, int n);
 
 void main(void){
