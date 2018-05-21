@@ -3,26 +3,38 @@
 
 #define MAX 20
 
-const int names = 4;
+const int names = 5;
 
-void ordenarCadenas(char *dic[MAX]){
-	int i;
-	char *aux;
-	for(i=0; i<names; i++){
-		if(strcmp(dic[i],dic[i+1]) > 0)
-		{
-			strcpy(aux,dic[i]);
-			*(dic+i) = *(dic+i+1);
-			dic[i+1] = aux;
-		}
-		//printf("%d %d\n",i+1,strcmp(dic[i],dic[i+1]));
-	}
-	for(i=0;i<names;i++)puts(dic[i]);
-	printf("\n");
-}
+void imprimir(char dic[][MAX]);
+void ordenarCadenas(char dic[][MAX]);
 
 void main(){
-	char dic[][MAX] = {"Jose","Manuel","Carlos","Ana"};
-	//printf("%d",strcmp(dic[0],dic[1]));
+	char dic[][MAX] = {"Jose","Manuel","Carlos","Ana","Lalo"};
+	imprimir(dic);
 	ordenarCadenas(dic);
+	printf("------------\n");
+	imprimir(dic);
+}
+
+void imprimir(char dic[][MAX]){
+	int i;
+	for(i=0;i<names;i++){
+		puts(dic[i]);
+	}
+}
+
+void ordenarCadenas(char dic[][MAX]){
+	int i,j;
+	char aux[MAX];//insertionsort
+	for(i=1; i < names; i++){
+		for(j=i; j>0; j--){		
+		//si la cadena j-1 es mayor (letra mas adelante en el alfabeto), retorna un valor mayor a 0
+			if(strcmp(dic[j-1],dic[j]) > 0)  
+			{ //swap para cadenas
+				strcpy(aux,dic[j]);
+				strcpy(dic[j],dic[j-1]);
+				strcpy(dic[j-1],aux);
+			}
+		}
+	}
 }
